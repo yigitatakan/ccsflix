@@ -4,21 +4,29 @@ import MovieCard from "@/components/MovieCard";
 import Navbar from "@/components/Navbar";
 import { getTVShows, getMoviesByGenre } from "@/lib/tmdb";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { toast } from "sonner";
+import { useState } from "react";
+
+const GENRE_IDS: Record<string, string> = {
+  action: "28",
+  comedy: "35",
+  horror: "27",
+  mystery: "9648",
+  tv: "tv"
+};
 
 const Category = () => {
   const { type } = useParams();
-  const [sortBy, setSortBy] = React.useState("popularity.desc");
+  const [sortBy, setSortBy] = useState("popularity.desc");
 
   const { data: movies, isLoading } = useQuery({
     queryKey: ["category", type, sortBy],
-    queryFn: () => type === "tv" ? getTVShows(sortBy) : getMoviesByGenre(type || "", sortBy),
+    queryFn: () => type === "tv" ? getTVShows(sortBy) : getMoviesByGenre(GENRE_IDS[type || "action"]),
   });
 
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-netflix-black">
+    <div className="min-h-screen bg-black">
       <Navbar />
       <div className="pt-24 px-[4%]">
         <div className="flex justify-between items-center mb-8">
@@ -37,7 +45,7 @@ const Category = () => {
           </Select>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {movies?.map((movie) => (
+          {movies?.map((movie: any) => (
             <MovieCard
               key={movie.id}
               id={movie.id}
