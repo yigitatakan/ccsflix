@@ -62,6 +62,11 @@ const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) =
     navigate(`/category/${category.toLowerCase()}`);
   };
 
+  const handleMovieClick = (selectedMovie: any) => {
+    onClose();
+    navigate(`/${selectedMovie.media_type || "movie"}/${selectedMovie.id}/watch`);
+  };
+
   const mediaType = movie.media_type || "movie";
   
   const categories = [
@@ -145,7 +150,11 @@ const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) =
               <h3 className="text-xl font-semibold">Similar Titles</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {similarMovies.slice(0, 4).map((similar) => (
-                  <div key={similar.id} className="space-y-2">
+                  <div 
+                    key={similar.id} 
+                    className="space-y-2 cursor-pointer hover:opacity-75 transition-opacity"
+                    onClick={() => handleMovieClick(similar)}
+                  >
                     <img
                       src={getImageUrl(similar.poster_path, "w500")}
                       alt={similar.title || similar.name}
@@ -163,7 +172,11 @@ const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) =
               <h3 className="text-xl font-semibold">Recommended For You</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {recommendations.slice(0, 4).map((recommendation) => (
-                  <div key={recommendation.id} className="space-y-2">
+                  <div 
+                    key={recommendation.id} 
+                    className="space-y-2 cursor-pointer hover:opacity-75 transition-opacity"
+                    onClick={() => handleMovieClick(recommendation)}
+                  >
                     <img
                       src={getImageUrl(recommendation.poster_path, "w500")}
                       alt={recommendation.title || recommendation.name}
