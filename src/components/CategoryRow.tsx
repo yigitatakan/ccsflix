@@ -1,4 +1,3 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import MovieCard from "./MovieCard";
 import {
   Carousel,
@@ -19,7 +18,7 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
 
   return (
     <div className="space-y-2 relative category-row-container">
-      <h2 className="text-xl font-medium px-[4%] text-white hover:text-gray-300 transition-colors duration-200">
+      <h2 className="text-lg md:text-xl font-medium px-[4%] text-white hover:text-gray-300 transition-colors duration-200">
         {title}
       </h2>
       <div className="relative px-[4%]">
@@ -32,7 +31,10 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
         >
           <CarouselContent className="-ml-2 md:-ml-4">
             {movies.map((movie) => (
-              <CarouselItem key={movie.id} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/6">
+              <CarouselItem 
+                key={movie.id} 
+                className="pl-2 md:pl-4 basis-1/3 sm:basis-1/4 md:basis-1/5 lg:basis-1/6 xl:basis-1/7"
+              >
                 <div className="movie-card-container">
                   <MovieCard
                     id={movie.id}
@@ -47,10 +49,10 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
             ))}
           </CarouselContent>
           <CarouselPrevious 
-            className="absolute left-[2%] z-40 h-[8.5vw] w-[4%] bg-black/30 hover:bg-black/60 border-none rounded-none"
+            className="absolute left-[2%] z-40 h-full w-[4%] bg-black/30 hover:bg-black/60 border-none rounded-none hidden md:flex"
           />
           <CarouselNext 
-            className="absolute right-[2%] z-40 h-[8.5vw] w-[4%] bg-black/30 hover:bg-black/60 border-none rounded-none"
+            className="absolute right-[2%] z-40 h-full w-[4%] bg-black/30 hover:bg-black/60 border-none rounded-none hidden md:flex"
           />
         </Carousel>
       </div>

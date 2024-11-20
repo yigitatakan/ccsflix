@@ -19,7 +19,7 @@ const MovieCard = ({ id, title, poster_path, media_type = "movie", ...rest }: Mo
     <>
       <div 
         onClick={handleCardClick}
-        className="movie-card relative min-w-[200px] h-[300px] rounded-md overflow-hidden cursor-pointer"
+        className="movie-card relative rounded-md overflow-hidden cursor-pointer"
       >
         <img
           src={poster_path ? imageUrl : "/placeholder.svg"}
@@ -28,7 +28,7 @@ const MovieCard = ({ id, title, poster_path, media_type = "movie", ...rest }: Mo
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-          <span className="text-white text-sm font-medium">{title}</span>
+          <span className="text-white text-xs sm:text-sm font-medium line-clamp-2">{title}</span>
         </div>
       </div>
       <MovieDetailsModal

@@ -30,26 +30,26 @@ const Hero = () => {
         <div className="absolute inset-0 hero-gradient" />
       </div>
       <div className="relative h-full flex items-center">
-        <div className="px-[4%] w-full max-w-[50%] space-y-4">
-          <h1 className="text-5xl md:text-7xl font-bold animate-fade-in">
+        <div className="px-[4%] w-full md:max-w-[50%] space-y-2 md:space-y-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold animate-fade-in line-clamp-2">
             {movie.title || movie.name}
           </h1>
-          <p className="text-lg text-gray-200 line-clamp-3 animate-fade-in">
+          <p className="text-sm sm:text-base md:text-lg text-gray-200 line-clamp-2 md:line-clamp-3 animate-fade-in">
             {movie.overview}
           </p>
-          <div className="flex gap-3">
+          <div className="flex gap-2 md:gap-3">
             <Link
               to={`/${movie.media_type || "movie"}/${movie.id}/watch`}
-              className="flex items-center gap-2 bg-white text-black px-8 py-3 rounded hover:bg-gray-300 transition font-medium animate-fade-in"
+              className="flex items-center gap-1 md:gap-2 bg-white text-black px-4 md:px-8 py-2 md:py-3 rounded text-sm md:text-base hover:bg-gray-300 transition font-medium animate-fade-in"
             >
-              <Play className="w-6 h-6 fill-current" />
+              <Play className="w-4 h-4 md:w-6 md:h-6 fill-current" />
               Play
             </Link>
             <button
               onClick={() => setSelectedMovie(movie)}
-              className="flex items-center gap-2 bg-gray-500/70 text-white px-8 py-3 rounded hover:bg-gray-500/50 transition font-medium animate-fade-in"
+              className="flex items-center gap-1 md:gap-2 bg-gray-500/70 text-white px-4 md:px-8 py-2 md:py-3 rounded text-sm md:text-base hover:bg-gray-500/50 transition font-medium animate-fade-in"
             >
-              <Info className="w-6 h-6" />
+              <Info className="w-4 h-4 md:w-6 md:h-6" />
               More Info
             </button>
           </div>
