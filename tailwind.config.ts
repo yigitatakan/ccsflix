@@ -62,9 +62,19 @@ export default {
           "0%": { transform: "scale(1)" },
           "100%": { transform: "scale(1.05)" },
         },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "fade-out": {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
       },
       animation: {
         "scale-up": "scale-up 0.2s ease-out forwards",
+        "fade-in": "fade-in 0.3s ease-out",
+        "fade-out": "fade-out 0.3s ease-out",
       },
     },
   },
