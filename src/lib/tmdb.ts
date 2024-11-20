@@ -60,13 +60,6 @@ export const getRomanceMovies = async () => {
   return response.data.results;
 };
 
-export const getTVShows = async (sortBy: string = "popularity.desc") => {
-  const response = await axios.get(
-    `${BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&sort_by=${sortBy}&with_original_language=en`
-  );
-  return response.data.results;
-};
-
 export const getMoviesByGenre = async (genreId: string) => {
   const response = await axios.get(
     `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}&sort_by=popularity.desc`
