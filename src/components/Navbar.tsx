@@ -1,12 +1,13 @@
 import { Search, Bell, User } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { searchContent } from "@/lib/tmdb";
 import { toast } from "sonner";
 import MovieDetailsModal from "./MovieDetailsModal";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<any>(null);
@@ -17,6 +18,12 @@ const Navbar = () => {
     enabled: searchQuery.length > 2,
   });
 
+  const handleNavigation = (path: string) => {
+    setSearchQuery("");
+    setIsSearchOpen(false);
+    navigate(path);
+  };
+
   return (
     <nav className="fixed top-0 w-full z-50 bg-gradient-to-b from-black/80 to-transparent px-4 py-3">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
@@ -25,10 +32,10 @@ const Navbar = () => {
             CINEPLAY
           </Link>
           <div className="hidden md:flex gap-4">
-            <Link to="/" className="text-white hover:text-gray-300">Home</Link>
-            <Link to="/tv" className="text-white hover:text-gray-300">TV Shows</Link>
-            <Link to="/movies" className="text-white hover:text-gray-300">Movies</Link>
-            <Link to="/new" className="text-white hover:text-gray-300">New & Popular</Link>
+            <button onClick={() => handleNavigation("/")} className="text-white hover:text-gray-300">Home</button>
+            <button onClick={() => handleNavigation("/tv")} className="text-white hover:text-gray-300">TV Shows</button>
+            <button onClick={() => handleNavigation("/movies")} className="text-white hover:text-gray-300">Movies</button>
+            <button onClick={() => handleNavigation("/new")} className="text-white hover:text-gray-300">New & Popular</button>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -67,7 +74,12 @@ const Navbar = () => {
                     )}
                     <div>
                       <p className="text-white font-medium">{result.title || result.name}</p>
-                      <p className="text-gray-400 text-sm">{result.media_type}</p>
+                      <p className="text-gray-400 text-sm">
+                        {result.media_type}
+                        {result.media_type === 'tv' && result.number_of_episodes && (
+                          <span className="ml-2">({result.number_of_episodes} episodes)</span>
+                        )}
+                      </p>
                     </div>
                   </div>
                 ))}
