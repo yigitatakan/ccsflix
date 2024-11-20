@@ -28,28 +28,6 @@ const GENRE_IDS: Record<string, string> = {
   western: "37"
 };
 
-const CATEGORY_NAMES: Record<string, string> = {
-  tv: "TV Shows",
-  action: "Action Movies",
-  comedy: "Comedy Movies",
-  horror: "Horror Movies",
-  thriller: "Thriller Movies",
-  romance: "Romance Movies",
-  drama: "Drama Movies",
-  scifi: "Sci-Fi Movies",
-  animation: "Animation Movies",
-  adventure: "Adventure Movies",
-  crime: "Crime Movies",
-  documentary: "Documentary Movies",
-  family: "Family Movies",
-  fantasy: "Fantasy Movies",
-  history: "History Movies",
-  music: "Music Movies",
-  mystery: "Mystery Movies",
-  war: "War Movies",
-  western: "Western Movies"
-};
-
 const Category = () => {
   const { type } = useParams();
   const [sortBy, setSortBy] = useState("popularity.desc");
@@ -61,7 +39,6 @@ const Category = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    isError,
   } = useInfiniteQuery({
     queryKey: ["category", type, sortBy],
     queryFn: async ({ pageParam = 1 }) => {
@@ -91,14 +68,7 @@ const Category = () => {
     </div>
   );
 
-  if (isError) return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="text-white">Error loading content</div>
-    </div>
-  );
-
   const allMovies = data?.pages.flatMap(page => page.results) || [];
-  const categoryName = CATEGORY_NAMES[type?.toLowerCase() || ""] || "Movies";
 
   return (
     <div className="min-h-screen bg-black">
@@ -106,7 +76,7 @@ const Category = () => {
       <div className="pt-24 px-[4%]">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-white">
-            {categoryName}
+            {type === "tv" ? "TV Shows" : `${type?.charAt(0).toUpperCase()}${type?.slice(1)} Movies`}
           </h1>
           <Select onValueChange={setSortBy} defaultValue={sortBy}>
             <SelectTrigger className="w-[180px] bg-black text-white border-gray-700">
