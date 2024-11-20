@@ -19,8 +19,19 @@ body {
 
 .category-row {
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .category-row::-webkit-scrollbar {
   display: none;
+}
+
+/* Add smooth scrolling to the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent content shift when modal opens */
+body.modal-open {
+  padding-right: var(--scrollbar-width);
 }
