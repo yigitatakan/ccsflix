@@ -14,12 +14,12 @@ const GENRE_IDS: Record<string, string> = {
   romance: "10749",
   drama: "18",
   scifi: "878",
-  fantasy: "14",
-  adventure: "12",
   animation: "16",
+  adventure: "12",
   crime: "80",
   documentary: "99",
   family: "10751",
+  fantasy: "14",
   history: "36",
   music: "10402",
   mystery: "9648",
@@ -45,7 +45,11 @@ const Category = () => {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return (
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="text-white">Loading...</div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-black">

@@ -38,7 +38,10 @@ const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) =
     "Comedy",
     "Horror",
     "Romance",
-    "Thriller"
+    "Thriller",
+    "Animation",
+    "Drama",
+    "Sci-Fi"
   ].filter(Boolean);
 
   return (
