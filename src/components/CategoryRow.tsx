@@ -32,19 +32,19 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
   if (!movies?.length) return null;
 
   return (
-    <div className="space-y-2 relative category-row-container">
-      <h2 className="text-xl font-medium px-4">{title}</h2>
+    <div className="space-y-4 relative category-row-container group">
+      <h2 className="text-xl font-medium px-[4%]">{title}</h2>
       <div className="relative group">
         <button
           onClick={() => scroll("left")}
-          className="scroll-button absolute left-0 z-40 h-full w-12 bg-black/30 flex items-center justify-center"
+          className="scroll-button absolute left-0 z-40 h-full w-12 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
           aria-label="Scroll left"
         >
           <ChevronLeft className="w-8 h-8 text-white" />
         </button>
         <div
           ref={rowRef}
-          className="category-row flex gap-2 overflow-x-auto px-4 scroll-smooth"
+          className="category-row flex gap-2 overflow-x-auto px-[4%] scroll-smooth"
         >
           {movies.map((movie) => (
             <MovieCard
@@ -61,7 +61,7 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
         </div>
         <button
           onClick={() => scroll("right")}
-          className="scroll-button absolute right-0 z-40 h-full w-12 bg-black/30 flex items-center justify-center"
+          className="scroll-button absolute right-0 z-40 h-full w-12 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
           aria-label="Scroll right"
         >
           <ChevronRight className="w-8 h-8 text-white" />

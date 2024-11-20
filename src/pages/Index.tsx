@@ -21,15 +21,15 @@ const Index = () => {
   });
 
   return (
-    <main className="min-h-screen">
+    <div className="min-h-screen bg-netflix-black">
       <Navbar />
       <Hero movie={trending?.[0]} />
-      <div className="relative z-10 -mt-32 space-y-8 pb-8">
+      <div className="relative z-10 -mt-32 pb-8">
         <CategoryRow title="Trending Now" movies={trending || []} />
         <CategoryRow title="Popular on CinePlay" movies={popular || []} />
         <CategoryRow title="New Releases" movies={newReleases || []} />
       </div>
-    </main>
+    </div>
   );
 };
 
