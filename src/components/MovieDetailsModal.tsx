@@ -1,8 +1,9 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Play, Plus, ThumbsUp } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getImageUrl } from "@/lib/tmdb";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 
 interface MovieDetailsModalProps {
   movie: any;
@@ -11,6 +12,7 @@ interface MovieDetailsModalProps {
 }
 
 const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) => {
+  const navigate = useNavigate();
   if (!movie) return null;
 
   const handleAddToList = () => {
@@ -20,6 +22,24 @@ const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) =
   const handleLike = () => {
     toast.success("Added to your liked titles");
   };
+
+  const handleCategoryClick = (category: string) => {
+    onClose();
+    navigate(`/category/${category.toLowerCase()}`);
+  };
+
+  // Get the media type category
+  const mediaType = movie.media_type || "movie";
+  
+  // Define available categories
+  const categories = [
+    mediaType.toUpperCase(),
+    "Action",
+    "Comedy",
+    "Horror",
+    "Romance",
+    "Thriller"
+  ].filter(Boolean);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -62,6 +82,17 @@ const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) =
             <span className="border px-1">HD</span>
           </div>
           <p className="text-gray-200">{movie.overview}</p>
+          <div className="flex flex-wrap gap-2 mt-4">
+            {categories.map((category) => (
+              <Badge
+                key={category}
+                className="cursor-pointer hover:bg-primary/80"
+                onClick={() => handleCategoryClick(category)}
+              >
+                {category}
+              </Badge>
+            ))}
+          </div>
         </div>
       </DialogContent>
     </Dialog>

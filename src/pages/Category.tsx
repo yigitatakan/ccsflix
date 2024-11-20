@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import MovieCard from "@/components/MovieCard";
 import Navbar from "@/components/Navbar";
-import { getTVShows, getMoviesByGenre } from "@/lib/tmdb";
+import { getTVShows, getMoviesByGenre, Movie } from "@/lib/tmdb";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 
@@ -10,8 +10,8 @@ const GENRE_IDS: Record<string, string> = {
   action: "28",
   comedy: "35",
   horror: "27",
-  mystery: "9648",
-  tv: "tv"
+  thriller: "53",
+  romance: "10749"
 };
 
 const Category = () => {
@@ -20,7 +20,7 @@ const Category = () => {
 
   const { data: movies, isLoading } = useQuery({
     queryKey: ["category", type, sortBy],
-    queryFn: () => type === "tv" ? getTVShows(sortBy) : getMoviesByGenre(GENRE_IDS[type || "action"]),
+    queryFn: () => type?.toLowerCase() === "tv" ? getTVShows(sortBy) : getMoviesByGenre(GENRE_IDS[type?.toLowerCase() || "action"]),
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -45,7 +45,7 @@ const Category = () => {
           </Select>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {movies?.map((movie: any) => (
+          {movies?.map((movie: Movie) => (
             <MovieCard
               key={movie.id}
               id={movie.id}
@@ -53,7 +53,6 @@ const Category = () => {
               poster_path={movie.poster_path}
               media_type={type === "tv" ? "tv" : "movie"}
               overview={movie.overview}
-              release_date={movie.release_date}
               backdrop_path={movie.backdrop_path}
             />
           ))}
