@@ -8,6 +8,7 @@ import {
   getMoviesByGenre,
   getKDramas,
   getTVShows,
+  type Movie,
 } from "@/lib/tmdb";
 
 const GENRE_IDS = {
@@ -34,17 +35,26 @@ const Index = () => {
 
   const { data: actionMovies } = useQuery({
     queryKey: ["action"],
-    queryFn: () => getMoviesByGenre(GENRE_IDS.action),
+    queryFn: async () => {
+      const response = await getMoviesByGenre(GENRE_IDS.action);
+      return response.results;
+    },
   });
 
   const { data: comedyMovies } = useQuery({
     queryKey: ["comedy"],
-    queryFn: () => getMoviesByGenre(GENRE_IDS.comedy),
+    queryFn: async () => {
+      const response = await getMoviesByGenre(GENRE_IDS.comedy);
+      return response.results;
+    },
   });
 
   const { data: dramaMovies } = useQuery({
     queryKey: ["drama"],
-    queryFn: () => getMoviesByGenre(GENRE_IDS.drama),
+    queryFn: async () => {
+      const response = await getMoviesByGenre(GENRE_IDS.drama);
+      return response.results;
+    },
   });
 
   const { data: kdramas } = useQuery({
@@ -54,27 +64,42 @@ const Index = () => {
 
   const { data: horrorMovies } = useQuery({
     queryKey: ["horror"],
-    queryFn: () => getMoviesByGenre(GENRE_IDS.horror),
+    queryFn: async () => {
+      const response = await getMoviesByGenre(GENRE_IDS.horror);
+      return response.results;
+    },
   });
 
   const { data: sciFiMovies } = useQuery({
     queryKey: ["scifi"],
-    queryFn: () => getMoviesByGenre(GENRE_IDS.scifi),
+    queryFn: async () => {
+      const response = await getMoviesByGenre(GENRE_IDS.scifi);
+      return response.results;
+    },
   });
 
   const { data: animatedMovies } = useQuery({
     queryKey: ["animated"],
-    queryFn: () => getMoviesByGenre(GENRE_IDS.animation),
+    queryFn: async () => {
+      const response = await getMoviesByGenre(GENRE_IDS.animation);
+      return response.results;
+    },
   });
 
   const { data: thrillerMovies } = useQuery({
     queryKey: ["thriller"],
-    queryFn: () => getMoviesByGenre(GENRE_IDS.thriller),
+    queryFn: async () => {
+      const response = await getMoviesByGenre(GENRE_IDS.thriller);
+      return response.results;
+    },
   });
 
   const { data: romanceMovies } = useQuery({
     queryKey: ["romance"],
-    queryFn: () => getMoviesByGenre(GENRE_IDS.romance),
+    queryFn: async () => {
+      const response = await getMoviesByGenre(GENRE_IDS.romance);
+      return response.results;
+    },
   });
 
   return (

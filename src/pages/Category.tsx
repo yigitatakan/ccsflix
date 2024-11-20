@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import MovieCard from "@/components/MovieCard";
 import Navbar from "@/components/Navbar";
-import { getTVShows, getMoviesByGenre } from "@/lib/tmdb";
+import { getTVShows, getMoviesByGenre, type MovieResponse } from "@/lib/tmdb";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
@@ -43,15 +43,16 @@ const Category = () => {
     queryKey: ["category", type, sortBy],
     queryFn: async ({ pageParam = 1 }) => {
       if (type?.toLowerCase() === "tv") {
-        return getTVShows(sortBy, pageParam);
+        return getTVShows(sortBy, pageParam as number);
       }
       const genreId = GENRE_IDS[type?.toLowerCase() || "action"];
       if (!genreId) {
         throw new Error("Invalid genre");
       }
-      return getMoviesByGenre(genreId, pageParam);
+      return getMoviesByGenre(genreId, pageParam as number);
     },
-    getNextPageParam: (lastPage) => 
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: MovieResponse) => 
       lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
   });
 
