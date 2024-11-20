@@ -28,35 +28,16 @@ const Watch = () => {
   });
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data === "paused") {
         setIsPaused(true);
-      } else {
+      } else if (event.data === "playing") {
         setIsPaused(false);
       }
     };
 
-    const handleMouseMove = () => {
-      setIsPaused(true);
-      let timeout = setTimeout(() => setIsPaused(false), 3000);
-      return () => clearTimeout(timeout);
-    };
-
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.code === "Space") {
-        setIsPaused(prev => !prev);
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("keydown", handleKeyPress);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("keydown", handleKeyPress);
-    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, []);
 
   useEffect(() => {
