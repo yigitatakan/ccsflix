@@ -13,6 +13,8 @@ export interface Movie {
   overview: string;
   media_type?: string;
   release_date?: string;
+  number_of_seasons?: number;
+  number_of_episodes?: number;
 }
 
 export interface MovieResponse {
