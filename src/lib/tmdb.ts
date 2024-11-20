@@ -22,6 +22,13 @@ export interface MovieResponse {
   page: number;
 }
 
+export const searchContent = async (query: string): Promise<Movie[]> => {
+  const response = await axios.get<MovieResponse>(
+    `${BASE_URL}/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`
+  );
+  return response.data.results;
+};
+
 export const getTrending = async (): Promise<Movie[]> => {
   const response = await axios.get<MovieResponse>(
     `${BASE_URL}/trending/all/day?api_key=${TMDB_API_KEY}`
@@ -53,6 +60,27 @@ export const getMoviesByGenre = async (genreId: string, page: number = 1): Promi
 export const getTVShows = async (sortBy: string = "popularity.desc", page: number = 1): Promise<MovieResponse> => {
   const response = await axios.get<MovieResponse>(
     `${BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&sort_by=${sortBy}&page=${page}&vote_count.gte=100&with_original_language=en`
+  );
+  return response.data;
+};
+
+export const getKDramas = async (): Promise<Movie[]> => {
+  const response = await axios.get<MovieResponse>(
+    `${BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&with_original_language=ko&sort_by=popularity.desc`
+  );
+  return response.data.results;
+};
+
+export const getMovieDetails = async (id: string): Promise<Movie> => {
+  const response = await axios.get<Movie>(
+    `${BASE_URL}/movie/${id}?api_key=${TMDB_API_KEY}`
+  );
+  return response.data;
+};
+
+export const getTVDetails = async (id: string): Promise<Movie> => {
+  const response = await axios.get<Movie>(
+    `${BASE_URL}/tv/${id}?api_key=${TMDB_API_KEY}`
   );
   return response.data;
 };
