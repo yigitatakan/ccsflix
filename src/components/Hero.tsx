@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import { getImageUrl } from "@/lib/tmdb";
 import { useQuery } from "@tanstack/react-query";
 import { getTrending } from "@/lib/tmdb";
+import { useState } from "react";
+import MovieDetailsModal from "./MovieDetailsModal";
 
 const Hero = () => {
+  const [selectedMovie, setSelectedMovie] = useState(null);
   const { data: trending } = useQuery({
     queryKey: ["trending"],
     queryFn: getTrending,
@@ -43,6 +46,7 @@ const Hero = () => {
               Play
             </Link>
             <button
+              onClick={() => setSelectedMovie(movie)}
               className="flex items-center gap-2 bg-gray-500/70 text-white px-8 py-3 rounded hover:bg-gray-500/50 transition font-medium animate-fade-in"
             >
               <Info className="w-6 h-6" />
@@ -51,6 +55,13 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      {selectedMovie && (
+        <MovieDetailsModal
+          movie={selectedMovie}
+          isOpen={!!selectedMovie}
+          onClose={() => setSelectedMovie(null)}
+        />
+      )}
     </div>
   );
 };

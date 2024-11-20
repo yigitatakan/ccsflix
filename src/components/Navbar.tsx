@@ -33,9 +33,10 @@ const Navbar = () => {
           </Link>
           <div className="hidden md:flex gap-4">
             <button onClick={() => handleNavigation("/")} className="text-white hover:text-gray-300">Home</button>
-            <button onClick={() => handleNavigation("/tv")} className="text-white hover:text-gray-300">TV Shows</button>
-            <button onClick={() => handleNavigation("/movies")} className="text-white hover:text-gray-300">Movies</button>
-            <button onClick={() => handleNavigation("/new")} className="text-white hover:text-gray-300">New & Popular</button>
+            <button onClick={() => handleNavigation("/category/tv")} className="text-white hover:text-gray-300">TV Shows</button>
+            <button onClick={() => handleNavigation("/category/action")} className="text-white hover:text-gray-300">Action</button>
+            <button onClick={() => handleNavigation("/category/comedy")} className="text-white hover:text-gray-300">Comedy</button>
+            <button onClick={() => handleNavigation("/category/horror")} className="text-white hover:text-gray-300">Horror</button>
           </div>
         </div>
         <div className="flex items-center gap-4">
