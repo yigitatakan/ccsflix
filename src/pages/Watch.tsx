@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getMovieDetails, getTVDetails } from "@/lib/tmdb";
-import { ArrowLeft, Volume2, VolumeX, Maximize, Minimize } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ArrowLeft, Volume2, VolumeX, Maximize, Minimize, Play, Pause } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
 
 const Watch = () => {
@@ -11,6 +11,7 @@ const Watch = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isControlsVisible, setIsControlsVisible] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
   let controlsTimer: NodeJS.Timeout;
 
   const { data: details } = useQuery({
@@ -22,22 +23,27 @@ const Watch = () => {
     ? `https://vidsrc.rip/embed/tv/${details?.external_ids?.imdb_id || id}/1/1`
     : `https://vidsrc.rip/embed/movie/${details?.external_ids?.imdb_id || id}`;
 
+  const handleMouseMove = useCallback(() => {
+    setIsControlsVisible(true);
+    clearTimeout(controlsTimer);
+    controlsTimer = setTimeout(() => {
+      if (isPlaying) {
+        setIsControlsVisible(false);
+      }
+    }, 3000);
+  }, [isPlaying]);
+
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
 
     document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      clearTimeout(controlsTimer);
+    };
   }, []);
-
-  const handleMouseMove = () => {
-    setIsControlsVisible(true);
-    clearTimeout(controlsTimer);
-    controlsTimer = setTimeout(() => {
-      setIsControlsVisible(false);
-    }, 3000);
-  };
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -58,10 +64,21 @@ const Watch = () => {
     }
   };
 
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+    const iframe = document.querySelector('iframe');
+    if (iframe) {
+      const newUrl = new URL(iframe.src);
+      newUrl.searchParams.set('autoplay', (!isPlaying).toString());
+      iframe.src = newUrl.toString();
+    }
+  };
+
   return (
     <div 
-      className="relative h-screen w-screen bg-black overflow-hidden"
+      className="relative h-screen w-screen bg-black overflow-hidden cursor-none hover:cursor-auto"
       onMouseMove={handleMouseMove}
+      onMouseLeave={() => isPlaying && setIsControlsVisible(false)}
     >
       {/* Back Button and Controls */}
       <div className={`absolute top-0 left-0 w-full z-50 transition-opacity duration-300 ${isControlsVisible ? 'opacity-100' : 'opacity-0'}`}>
@@ -90,12 +107,18 @@ const Watch = () => {
           <div className="flex items-center justify-between text-white">
             <div className="flex items-center gap-4">
               <button
+                onClick={togglePlay}
+                className="hover:text-gray-300 transition-colors"
+              >
+                {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
+              </button>
+              <button
                 onClick={toggleMute}
                 className="hover:text-gray-300 transition-colors"
               >
                 {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
               </button>
-              <div className="text-sm">
+              <div className="text-sm font-medium">
                 {details?.title || details?.name}
               </div>
             </div>
