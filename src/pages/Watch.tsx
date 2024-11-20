@@ -13,8 +13,8 @@ const Watch = () => {
   });
 
   const embedUrl = type === "tv"
-    ? `https://vidsrc.rip/embed/tv/${details?.external_ids?.imdb_id || id}/1/1`
-    : `https://vidsrc.rip/embed/movie/${details?.external_ids?.imdb_id || id}`;
+    ? `https://embed.su/embed/tv/${id}/1/1`
+    : `https://embed.su/embed/movie/${id}`;
 
   return (
     <div className="relative h-screen w-screen bg-black">
