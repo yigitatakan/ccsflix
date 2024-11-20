@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CategoryRow from "@/components/CategoryRow";
+import ContinueWatching from "@/components/ContinueWatching";
 import {
   getPopular,
   getNewReleases,
@@ -81,6 +82,7 @@ const Index = () => {
       <Navbar />
       <Hero />
       <div className="relative z-10 -mt-32 pb-8">
+        <ContinueWatching />
         <CategoryRow title="Popular on CinePlay" movies={popular || []} />
         <CategoryRow title="New Releases" movies={newReleases || []} />
         <CategoryRow title="Action & Adventure" movies={actionMovies || []} />

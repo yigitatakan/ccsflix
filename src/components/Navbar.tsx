@@ -21,7 +21,11 @@ const Navbar = () => {
   const handleNavigation = (path: string) => {
     setSearchQuery("");
     setIsSearchOpen(false);
-    navigate(path);
+    if (path === "/tv" || path === "/movies") {
+      navigate(`/category?type=${path.replace("/", "")}`);
+    } else {
+      navigate(path);
+    }
   };
 
   return (
