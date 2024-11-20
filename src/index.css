@@ -23,44 +23,26 @@ body {
 }
 
 .movie-card:hover {
-  transform: scale(1.05);
-  z-index: 10;
-}
-
-.category-row {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  margin: 2.5vw 0;
-}
-
-.category-row::-webkit-scrollbar {
-  display: none;
-}
-
-.scroll-button {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.category-row-container:hover .scroll-button {
-  opacity: 1;
-}
-
-.category-row-container:hover .movie-card {
-  transform: translateX(-2%);
-}
-
-.category-row-container:hover .movie-card:hover {
   transform: scale(1.2);
-  transition-delay: 0.3s;
+  z-index: 50;
 }
 
-.category-row-container:hover .movie-card:hover ~ .movie-card {
-  transform: translateX(2%);
+.movie-card-container {
+  padding: 0.2%;
+  transition: transform 0.3s ease;
 }
 
-html {
-  scroll-behavior: smooth;
+.category-row-container {
+  margin-bottom: 3vw;
+  position: relative;
+}
+
+.category-row-container:hover {
+  z-index: 20;
+}
+
+.category-row-container:last-child {
+  margin-bottom: 4vw;
 }
 
 .netflix-gradient {
@@ -80,14 +62,6 @@ html {
   background: linear-gradient(to top, #141414 10%, transparent 90%);
 }
 
-.category-row-container {
-  margin-bottom: 3vw;
-}
-
-.category-row-container:hover {
-  z-index: 10;
-}
-
-.category-row-container:last-child {
-  margin-bottom: 4vw;
+html {
+  scroll-behavior: smooth;
 }
