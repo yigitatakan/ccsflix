@@ -4,12 +4,10 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { searchContent } from "@/lib/tmdb";
 import { toast } from "sonner";
-import MovieDetailsModal from "./MovieDetailsModal";
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState<any>(null);
 
   const { data: searchResults } = useQuery({
     queryKey: ["search", searchQuery],
@@ -55,25 +53,15 @@ const Navbar = () => {
               onClick={() => setIsSearchOpen(!isSearchOpen)}
             />
             {searchResults && searchResults.length > 0 && (
-              <div className="absolute top-full right-0 mt-2 w-96 bg-black/90 rounded shadow-lg">
+              <div className="absolute top-full right-0 mt-2 w-64 bg-black/90 rounded shadow-lg">
                 {searchResults.slice(0, 5).map((result: any) => (
-                  <div
+                  <Link
                     key={result.id}
-                    className="flex items-center gap-2 p-2 hover:bg-gray-800 cursor-pointer"
-                    onClick={() => setSelectedMovie(result)}
+                    to={`/${result.media_type}/${result.id}`}
+                    className="block px-4 py-2 hover:bg-gray-800"
                   >
-                    {result.poster_path && (
-                      <img
-                        src={`https://image.tmdb.org/t/p/w92${result.poster_path}`}
-                        alt={result.title || result.name}
-                        className="w-12 h-16 object-cover rounded"
-                      />
-                    )}
-                    <div>
-                      <p className="text-white font-medium">{result.title || result.name}</p>
-                      <p className="text-gray-400 text-sm">{result.media_type}</p>
-                    </div>
-                  </div>
+                    {result.title || result.name}
+                  </Link>
                 ))}
               </div>
             )}
@@ -87,13 +75,6 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
-      {selectedMovie && (
-        <MovieDetailsModal
-          movie={selectedMovie}
-          isOpen={!!selectedMovie}
-          onClose={() => setSelectedMovie(null)}
-        />
-      )}
     </nav>
   );
 };
