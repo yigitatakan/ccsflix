@@ -11,7 +11,20 @@ const GENRE_IDS: Record<string, string> = {
   comedy: "35",
   horror: "27",
   thriller: "53",
-  romance: "10749"
+  romance: "10749",
+  drama: "18",
+  scifi: "878",
+  fantasy: "14",
+  adventure: "12",
+  animation: "16",
+  crime: "80",
+  documentary: "99",
+  family: "10751",
+  history: "36",
+  music: "10402",
+  mystery: "9648",
+  war: "10752",
+  western: "37"
 };
 
 const Category = () => {
@@ -20,7 +33,16 @@ const Category = () => {
 
   const { data: movies, isLoading } = useQuery({
     queryKey: ["category", type, sortBy],
-    queryFn: () => type?.toLowerCase() === "tv" ? getTVShows(sortBy) : getMoviesByGenre(GENRE_IDS[type?.toLowerCase() || "action"]),
+    queryFn: async () => {
+      if (type?.toLowerCase() === "tv") {
+        return getTVShows(sortBy);
+      }
+      const genreId = GENRE_IDS[type?.toLowerCase() || "action"];
+      if (!genreId) {
+        throw new Error("Invalid genre");
+      }
+      return getMoviesByGenre(genreId);
+    },
   });
 
   if (isLoading) return <div>Loading...</div>;

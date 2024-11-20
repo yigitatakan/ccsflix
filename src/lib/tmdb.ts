@@ -12,6 +12,7 @@ export interface Movie {
   backdrop_path: string;
   overview: string;
   media_type?: string;
+  release_date?: string;
 }
 
 export const getTrending = async (): Promise<Movie[]> => {
@@ -35,51 +36,16 @@ export const getNewReleases = async (): Promise<Movie[]> => {
   return response.data.results;
 };
 
-export const getHorrorMovies = async (): Promise<Movie[]> => {
-  const response = await axios.get(
-    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=27&sort_by=popularity.desc`
-  );
-  return response.data.results;
-};
-
-export const getSciFiMovies = async (): Promise<Movie[]> => {
-  const response = await axios.get(
-    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=878&sort_by=popularity.desc`
-  );
-  return response.data.results;
-};
-
-export const getAnimatedMovies = async (): Promise<Movie[]> => {
-  const response = await axios.get(
-    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=16&sort_by=popularity.desc`
-  );
-  return response.data.results;
-};
-
-export const getThrillerMovies = async (): Promise<Movie[]> => {
-  const response = await axios.get(
-    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=53&sort_by=popularity.desc`
-  );
-  return response.data.results;
-};
-
-export const getRomanceMovies = async (): Promise<Movie[]> => {
-  const response = await axios.get(
-    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=10749&sort_by=popularity.desc`
-  );
-  return response.data.results;
-};
-
 export const getMoviesByGenre = async (genreId: string): Promise<Movie[]> => {
   const response = await axios.get(
-    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}&sort_by=popularity.desc`
+    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}&sort_by=popularity.desc&page=1&vote_count.gte=100`
   );
   return response.data.results;
 };
 
 export const getTVShows = async (sortBy: string = "popularity.desc"): Promise<Movie[]> => {
   const response = await axios.get(
-    `${BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&sort_by=${sortBy}&with_original_language=en`
+    `${BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&sort_by=${sortBy}&page=1&vote_count.gte=100&with_original_language=en`
   );
   return response.data.results;
 };
