@@ -1,21 +1,18 @@
 import { Play, Info } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getImageUrl } from "@/lib/tmdb";
+import { useQuery } from "@tanstack/react-query";
+import { getTrending } from "@/lib/tmdb";
 
-interface Movie {
-  id: number;
-  title?: string;
-  name?: string;
-  overview: string;
-  backdrop_path: string;
-  media_type?: string;
-}
+const Hero = () => {
+  const { data: trending } = useQuery({
+    queryKey: ["trending"],
+    queryFn: getTrending,
+    refetchInterval: 1000 * 60 * 60, // Refetch every hour
+  });
 
-interface HeroProps {
-  movie?: Movie;
-}
+  const movie = trending?.[Math.floor(Math.random() * (trending?.length || 1))];
 
-const Hero = ({ movie }: HeroProps) => {
   if (!movie) return null;
 
   return (
@@ -31,22 +28,22 @@ const Hero = ({ movie }: HeroProps) => {
       </div>
       <div className="relative h-full flex items-center">
         <div className="px-[4%] w-full max-w-[50%] space-y-4">
-          <h1 className="text-5xl md:text-7xl font-bold">
+          <h1 className="text-5xl md:text-7xl font-bold animate-fade-in">
             {movie.title || movie.name}
           </h1>
-          <p className="text-lg text-gray-200 line-clamp-3">
+          <p className="text-lg text-gray-200 line-clamp-3 animate-fade-in">
             {movie.overview}
           </p>
           <div className="flex gap-3">
             <Link
               to={`/${movie.media_type || "movie"}/${movie.id}/watch`}
-              className="flex items-center gap-2 bg-white text-black px-8 py-3 rounded hover:bg-gray-300 transition font-medium"
+              className="flex items-center gap-2 bg-white text-black px-8 py-3 rounded hover:bg-gray-300 transition font-medium animate-fade-in"
             >
               <Play className="w-6 h-6 fill-current" />
               Play
             </Link>
             <button
-              className="flex items-center gap-2 bg-gray-500/70 text-white px-8 py-3 rounded hover:bg-gray-500/50 transition font-medium"
+              className="flex items-center gap-2 bg-gray-500/70 text-white px-8 py-3 rounded hover:bg-gray-500/50 transition font-medium animate-fade-in"
             >
               <Info className="w-6 h-6" />
               More Info
