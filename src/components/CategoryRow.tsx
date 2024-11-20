@@ -1,8 +1,16 @@
 import MovieCard from "./MovieCard";
 
+interface Movie {
+  id: number;
+  title: string;
+  name?: string;
+  poster_path: string;
+  media_type?: string;
+}
+
 interface CategoryRowProps {
   title: string;
-  movies: Array<{ id: number; title: string; imageUrl: string }>;
+  movies: Movie[];
 }
 
 const CategoryRow = ({ title, movies }: CategoryRowProps) => {
@@ -13,8 +21,10 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
         {movies.map((movie) => (
           <MovieCard
             key={movie.id}
-            title={movie.title}
-            imageUrl={movie.imageUrl}
+            id={movie.id}
+            title={movie.title || movie.name || ""}
+            poster_path={movie.poster_path}
+            media_type={movie.media_type}
           />
         ))}
       </div>
