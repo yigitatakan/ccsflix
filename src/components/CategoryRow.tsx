@@ -23,9 +23,15 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
 
   const scroll = (direction: "left" | "right") => {
     if (rowRef.current) {
-      const { scrollLeft, clientWidth } = rowRef.current;
-      const scrollTo = direction === "left" ? scrollLeft - clientWidth : scrollLeft + clientWidth;
-      rowRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
+      const scrollAmount = rowRef.current.clientWidth * 0.75; // Scroll 75% of the visible width
+      const targetScroll = direction === "left" 
+        ? rowRef.current.scrollLeft - scrollAmount
+        : rowRef.current.scrollLeft + scrollAmount;
+
+      rowRef.current.scrollTo({
+        left: targetScroll,
+        behavior: "smooth"
+      });
     }
   };
 
@@ -39,7 +45,7 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
       <div className="relative group">
         <button
           onClick={() => scroll("left")}
-          className="scroll-button absolute left-0 z-40 h-[8.5vw] w-[4%] bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60"
+          className="scroll-button absolute left-0 z-40 h-[8.5vw] w-[4%] bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60 disabled:opacity-0"
           aria-label="Scroll left"
         >
           <ChevronLeft className="w-6 h-6 text-white" />
@@ -65,7 +71,7 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
         </div>
         <button
           onClick={() => scroll("right")}
-          className="scroll-button absolute right-0 z-40 h-[8.5vw] w-[4%] bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60"
+          className="scroll-button absolute right-0 z-40 h-[8.5vw] w-[4%] bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60 disabled:opacity-0"
           aria-label="Scroll right"
         >
           <ChevronRight className="w-6 h-6 text-white" />
