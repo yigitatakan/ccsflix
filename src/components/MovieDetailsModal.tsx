@@ -1,7 +1,8 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Play, Info, Plus, ThumbsUp } from "lucide-react";
+import { Play, Plus, ThumbsUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getImageUrl } from "@/lib/tmdb";
+import { toast } from "sonner";
 
 interface MovieDetailsModalProps {
   movie: any;
@@ -11,6 +12,14 @@ interface MovieDetailsModalProps {
 
 const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) => {
   if (!movie) return null;
+
+  const handleAddToList = () => {
+    toast.success("Added to My List");
+  };
+
+  const handleLike = () => {
+    toast.success("Added to your liked titles");
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -31,10 +40,16 @@ const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) =
               >
                 <Play className="w-5 h-5" /> Play
               </Link>
-              <button className="flex items-center gap-2 bg-gray-500/70 text-white px-4 py-2 rounded hover:bg-gray-500/50 transition">
+              <button 
+                onClick={handleAddToList}
+                className="flex items-center gap-2 bg-gray-500/70 text-white px-4 py-2 rounded hover:bg-gray-500/50 transition"
+              >
                 <Plus className="w-5 h-5" /> My List
               </button>
-              <button className="flex items-center gap-2 bg-gray-500/70 text-white p-2 rounded-full hover:bg-gray-500/50 transition">
+              <button 
+                onClick={handleLike}
+                className="flex items-center gap-2 bg-gray-500/70 text-white p-2 rounded-full hover:bg-gray-500/50 transition"
+              >
                 <ThumbsUp className="w-5 h-5" />
               </button>
             </div>

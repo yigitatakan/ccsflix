@@ -25,35 +25,31 @@ const Navbar = () => {
             CINEPLAY
           </Link>
           <div className="hidden md:flex gap-4">
-            <Link to="/" className="text-white hover:text-gray-300">
-              Home
-            </Link>
-            <Link to="/tv" className="text-white hover:text-gray-300">
-              TV Shows
-            </Link>
-            <Link to="/movies" className="text-white hover:text-gray-300">
-              Movies
-            </Link>
-            <Link to="/new" className="text-white hover:text-gray-300">
-              New & Popular
-            </Link>
+            <Link to="/" className="text-white hover:text-gray-300">Home</Link>
+            <Link to="/tv" className="text-white hover:text-gray-300">TV Shows</Link>
+            <Link to="/movies" className="text-white hover:text-gray-300">Movies</Link>
+            <Link to="/new" className="text-white hover:text-gray-300">New & Popular</Link>
           </div>
         </div>
         <div className="flex items-center gap-4">
           <div className="relative">
-            {isSearchOpen && (
-              <input
-                type="text"
-                placeholder="Search..."
-                className="bg-black/80 text-white px-4 py-2 rounded"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            )}
-            <Search
-              className="w-6 h-6 text-white cursor-pointer hover:text-gray-300"
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-            />
+            <div className="flex items-center">
+              {isSearchOpen && (
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="bg-black/80 text-white px-4 py-2 rounded-l border-r border-gray-700"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              )}
+              <button
+                className={`p-2 ${isSearchOpen ? 'bg-black/80 rounded-r' : ''}`}
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+              >
+                <Search className="w-6 h-6 text-white hover:text-gray-300" />
+              </button>
+            </div>
             {searchResults && searchResults.length > 0 && (
               <div className="absolute top-full right-0 mt-2 w-96 bg-black/90 rounded shadow-lg">
                 {searchResults.slice(0, 5).map((result: any) => (
@@ -82,9 +78,7 @@ const Navbar = () => {
             className="w-6 h-6 text-white cursor-pointer hover:text-gray-300"
             onClick={() => toast("No new notifications")}
           />
-          <Link to="/profile">
-            <User className="w-6 h-6 text-white cursor-pointer hover:text-gray-300" />
-          </Link>
+          <User className="w-6 h-6 text-white cursor-pointer hover:text-gray-300" />
         </div>
       </div>
       {selectedMovie && (

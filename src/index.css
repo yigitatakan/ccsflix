@@ -6,6 +6,14 @@ body {
   background-color: #141414;
   color: white;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
 .movie-card {
@@ -20,18 +28,26 @@ body {
 .category-row {
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding: 20px 0;
 }
 
 .category-row::-webkit-scrollbar {
   display: none;
 }
 
-/* Add smooth scrolling to the entire page */
+.scroll-button {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.category-row-container:hover .scroll-button {
+  opacity: 1;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
-/* Prevent content shift when modal opens */
 body.modal-open {
   padding-right: var(--scrollbar-width);
 }
