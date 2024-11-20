@@ -44,8 +44,6 @@ const Navbar = () => {
           <div className="hidden md:flex gap-4">
             <button onClick={() => handleNavigation("/")} className="text-white hover:text-gray-300">Home</button>
             <button onClick={() => handleNavigation("/category/tv")} className="text-white hover:text-gray-300">TV Shows</button>
-            <button onClick={() => handleNavigation("/category/new-releases")} className="text-white hover:text-gray-300">New Releases</button>
-            <button onClick={() => handleNavigation("/category/popular")} className="text-white hover:text-gray-300">Popular</button>
             <button onClick={() => handleNavigation("/category/action")} className="text-white hover:text-gray-300">Action</button>
             <button onClick={() => handleNavigation("/category/comedy")} className="text-white hover:text-gray-300">Comedy</button>
             <button onClick={() => handleNavigation("/category/horror")} className="text-white hover:text-gray-300">Horror</button>
