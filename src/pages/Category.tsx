@@ -1,10 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import MovieCard from "@/components/MovieCard";
 import Navbar from "@/components/Navbar";
-import { getTVShows, getMoviesByGenre, Movie } from "@/lib/tmdb";
+import { getTVShows, getMoviesByGenre } from "@/lib/tmdb";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
 const GENRE_IDS: Record<string, string> = {
   action: "28",
@@ -30,26 +31,43 @@ const GENRE_IDS: Record<string, string> = {
 const Category = () => {
   const { type } = useParams();
   const [sortBy, setSortBy] = useState("popularity.desc");
+  const { ref, inView } = useInView();
 
-  const { data: movies, isLoading } = useQuery({
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery({
     queryKey: ["category", type, sortBy],
-    queryFn: async () => {
+    queryFn: async ({ pageParam = 1 }) => {
       if (type?.toLowerCase() === "tv") {
-        return getTVShows(sortBy);
+        return getTVShows(sortBy, pageParam);
       }
       const genreId = GENRE_IDS[type?.toLowerCase() || "action"];
       if (!genreId) {
         throw new Error("Invalid genre");
       }
-      return getMoviesByGenre(genreId);
+      return getMoviesByGenre(genreId, pageParam);
     },
+    getNextPageParam: (lastPage) => 
+      lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
   });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, hasNextPage]);
 
   if (isLoading) return (
     <div className="min-h-screen bg-black flex items-center justify-center">
       <div className="text-white">Loading...</div>
     </div>
   );
+
+  const allMovies = data?.pages.flatMap(page => page.results) || [];
 
   return (
     <div className="min-h-screen bg-black">
@@ -71,9 +89,9 @@ const Category = () => {
           </Select>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {movies?.map((movie: Movie) => (
+          {allMovies.map((movie) => (
             <MovieCard
-              key={movie.id}
+              key={`${movie.id}-${movie.title}`}
               id={movie.id}
               title={movie.title || movie.name || ""}
               poster_path={movie.poster_path}
@@ -82,6 +100,11 @@ const Category = () => {
               backdrop_path={movie.backdrop_path}
             />
           ))}
+        </div>
+        <div ref={ref} className="flex justify-center p-4">
+          {isFetchingNextPage && (
+            <div className="text-white">Loading more...</div>
+          )}
         </div>
       </div>
     </div>

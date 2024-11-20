@@ -1,7 +1,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Play, Plus, ThumbsUp } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { getImageUrl } from "@/lib/tmdb";
+import { getImageUrl, addToList } from "@/lib/tmdb";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 
@@ -15,8 +15,15 @@ const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) =
   const navigate = useNavigate();
   if (!movie) return null;
 
-  const handleAddToList = () => {
-    toast.success("Added to My List");
+  const handleAddToList = async () => {
+    try {
+      // Using a default list ID - in a real app, you'd get this from user's data
+      const listId = "8266034";
+      await addToList(listId, movie.id, movie.media_type || "movie");
+      toast.success("Added to My List");
+    } catch (error) {
+      toast.error("Failed to add to list. Please try again.");
+    }
   };
 
   const handleLike = () => {
@@ -28,10 +35,8 @@ const MovieDetailsModal = ({ movie, isOpen, onClose }: MovieDetailsModalProps) =
     navigate(`/category/${category.toLowerCase()}`);
   };
 
-  // Get the media type category
   const mediaType = movie.media_type || "movie";
   
-  // Define available categories
   const categories = [
     mediaType.toUpperCase(),
     "Action",
