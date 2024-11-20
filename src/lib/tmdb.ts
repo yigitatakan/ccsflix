@@ -68,30 +68,71 @@ export const addToList = async (listId: string, mediaId: number, mediaType: 'mov
   return response.data;
 };
 
-export const getKDramas = async (): Promise<Movie[]> => {
-  const response = await axios.get(
-    `${BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&with_original_language=ko&sort_by=popularity.desc`
+export const removeFromList = async (listId: string, mediaId: number, mediaType: 'movie' | 'tv') => {
+  const response = await axios.post(
+    `${BASE_URL}/list/${listId}/remove_item?api_key=${TMDB_API_KEY}`,
+    {
+      media_id: mediaId,
+      media_type: mediaType
+    }
+  );
+  return response.data;
+};
+
+interface Country {
+  iso_3166_1: string;
+  english_name: string;
+  native_name: string;
+}
+
+export const getCountries = async (): Promise<Country[]> => {
+  const response = await axios.get<Country[]>(
+    `${BASE_URL}/configuration/countries?api_key=${TMDB_API_KEY}`
+  );
+  return response.data;
+};
+
+export const getWatchlistMovies = async (accountId: string): Promise<Movie[]> => {
+  const response = await axios.get<MovieResponse>(
+    `${BASE_URL}/account/${accountId}/watchlist/movies?api_key=${TMDB_API_KEY}`
   );
   return response.data.results;
 };
 
-export const getMovieDetails = async (id: string) => {
-  const response = await axios.get(
-    `${BASE_URL}/movie/${id}?api_key=${TMDB_API_KEY}`
+export const getWatchlistTV = async (accountId: string): Promise<Movie[]> => {
+  const response = await axios.get<MovieResponse>(
+    `${BASE_URL}/account/${accountId}/watchlist/tv?api_key=${TMDB_API_KEY}`
   );
-  return response.data;
+  return response.data.results;
 };
 
-export const getTVDetails = async (id: string) => {
-  const response = await axios.get(
-    `${BASE_URL}/tv/${id}?api_key=${TMDB_API_KEY}`
+interface List {
+  id: number;
+  name: string;
+  description: string;
+  favorite_count: number;
+  item_count: number;
+  iso_639_1: string;
+  list_type: string;
+}
+
+export const getUserLists = async (accountId: string): Promise<List[]> => {
+  const response = await axios.get<{ results: List[] }>(
+    `${BASE_URL}/account/${accountId}/lists?api_key=${TMDB_API_KEY}`
   );
-  return response.data;
+  return response.data.results;
 };
 
-export const searchContent = async (query: string): Promise<Movie[]> => {
-  const response = await axios.get(
-    `${BASE_URL}/search/multi?api_key=${TMDB_API_KEY}&query=${query}`
+export const getSimilarMovies = async (movieId: string): Promise<Movie[]> => {
+  const response = await axios.get<MovieResponse>(
+    `${BASE_URL}/movie/${movieId}/similar?api_key=${TMDB_API_KEY}`
+  );
+  return response.data.results;
+};
+
+export const getRecommendations = async (movieId: string): Promise<Movie[]> => {
+  const response = await axios.get<MovieResponse>(
+    `${BASE_URL}/movie/${movieId}/recommendations?api_key=${TMDB_API_KEY}`
   );
   return response.data.results;
 };
