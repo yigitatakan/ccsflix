@@ -2,12 +2,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getMovieDetails, getTVDetails } from "@/lib/tmdb";
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Watch = () => {
   const navigate = useNavigate();
   const { type, id } = useParams();
   const [useBackupPlayer, setUseBackupPlayer] = useState(false);
+  const [primaryPlayerLoaded, setPrimaryPlayerLoaded] = useState(false);
 
   const { data: details } = useQuery({
     queryKey: ["details", type, id],
@@ -24,8 +25,19 @@ const Watch = () => {
     ? `https://player.autoembed.cc/embed/tv/${details?.external_ids?.imdb_id || id}/1/1`
     : `https://player.autoembed.cc/embed/movie/${details?.external_ids?.imdb_id || id}`;
 
-  const handlePrimaryPlayerError = () => {
-    setUseBackupPlayer(true);
+  useEffect(() => {
+    // Set a timeout to switch to backup player if primary doesn't load
+    const timeoutId = setTimeout(() => {
+      if (!primaryPlayerLoaded) {
+        setUseBackupPlayer(true);
+      }
+    }, 5000); // Wait 5 seconds before switching to backup
+
+    return () => clearTimeout(timeoutId);
+  }, [primaryPlayerLoaded]);
+
+  const handlePrimaryPlayerLoad = () => {
+    setPrimaryPlayerLoaded(true);
   };
 
   return (
@@ -47,7 +59,7 @@ const Watch = () => {
           className="w-full h-full"
           allowFullScreen
           allow="autoplay; fullscreen; picture-in-picture"
-          onError={handlePrimaryPlayerError}
+          onLoad={handlePrimaryPlayerLoad}
         />
       ) : (
         <iframe
