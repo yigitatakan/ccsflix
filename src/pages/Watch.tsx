@@ -2,19 +2,31 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getMovieDetails, getTVDetails } from "@/lib/tmdb";
 import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
 
 const Watch = () => {
   const navigate = useNavigate();
   const { type, id } = useParams();
+  const [useBackupPlayer, setUseBackupPlayer] = useState(false);
 
   const { data: details } = useQuery({
     queryKey: ["details", type, id],
     queryFn: () => (type === "tv" ? getTVDetails(id!) : getMovieDetails(id!)),
   });
 
-  const embedUrl = type === "tv"
+  // Primary vidsrc.rip player URL
+  const primaryUrl = type === "tv"
     ? `https://vidsrc.rip/embed/tv/${details?.external_ids?.imdb_id || id}/1/1`
     : `https://vidsrc.rip/embed/movie/${details?.external_ids?.imdb_id || id}`;
+
+  // Backup Anyembed player URL
+  const backupUrl = type === "tv"
+    ? `https://player.autoembed.cc/embed/tv/${details?.external_ids?.imdb_id || id}/1/1`
+    : `https://player.autoembed.cc/embed/movie/${details?.external_ids?.imdb_id || id}`;
+
+  const handlePrimaryPlayerError = () => {
+    setUseBackupPlayer(true);
+  };
 
   return (
     <div className="relative h-screen w-screen bg-black">
@@ -28,12 +40,24 @@ const Watch = () => {
         </button>
       </div>
 
-      <iframe
-        src={embedUrl}
-        className="w-full h-full"
-        allowFullScreen
-        allow="autoplay; fullscreen; picture-in-picture"
-      />
+      {!useBackupPlayer ? (
+        <iframe
+          key="primary-player"
+          src={primaryUrl}
+          className="w-full h-full"
+          allowFullScreen
+          allow="autoplay; fullscreen; picture-in-picture"
+          onError={handlePrimaryPlayerError}
+        />
+      ) : (
+        <iframe
+          key="backup-player"
+          src={backupUrl}
+          className="w-full h-full"
+          allowFullScreen
+          allow="autoplay; fullscreen; picture-in-picture"
+        />
+      )}
     </div>
   );
 };
