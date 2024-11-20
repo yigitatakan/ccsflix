@@ -5,6 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { searchContent } from "@/lib/tmdb";
 import { toast } from "sonner";
 import MovieDetailsModal from "./MovieDetailsModal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -22,6 +28,10 @@ const Navbar = () => {
     setSearchQuery("");
     setIsSearchOpen(false);
     navigate(path);
+  };
+
+  const showMyList = () => {
+    toast.info("My List feature coming soon!");
   };
 
   return (
@@ -91,7 +101,21 @@ const Navbar = () => {
             className="w-6 h-6 text-white cursor-pointer hover:text-gray-300"
             onClick={() => toast("No new notifications")}
           />
-          <User className="w-6 h-6 text-white cursor-pointer hover:text-gray-300" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="focus:outline-none">
+                <User className="w-6 h-6 text-white hover:text-gray-300" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-48 bg-black/90 text-white border-gray-700">
+              <DropdownMenuItem onClick={showMyList} className="cursor-pointer hover:bg-gray-800">
+                My List
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.info("Account settings coming soon!")} className="cursor-pointer hover:bg-gray-800">
+                Account Settings
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       {selectedMovie && (
