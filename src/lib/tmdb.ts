@@ -24,27 +24,6 @@ export interface MovieResponse {
   page: number;
 }
 
-export const getAccountDetails = async (accountId: string) => {
-  const response = await axios.get(
-    `${BASE_URL}/account/${accountId}?api_key=${TMDB_API_KEY}`
-  );
-  return response.data;
-};
-
-export const getRatedMovies = async (accountId: string) => {
-  const response = await axios.get<MovieResponse>(
-    `${BASE_URL}/account/${accountId}/rated/movies?api_key=${TMDB_API_KEY}`
-  );
-  return response.data.results;
-};
-
-export const getRatedTV = async (accountId: string) => {
-  const response = await axios.get<MovieResponse>(
-    `${BASE_URL}/account/${accountId}/rated/tv?api_key=${TMDB_API_KEY}`
-  );
-  return response.data.results;
-};
-
 export const searchContent = async (query: string): Promise<Movie[]> => {
   const response = await axios.get<MovieResponse>(
     `${BASE_URL}/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`
