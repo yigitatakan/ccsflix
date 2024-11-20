@@ -19,7 +19,7 @@ const Hero = () => {
   if (!movie) return null;
 
   return (
-    <div className="relative h-[56.25vw] w-full">
+    <div className="relative h-[56.25vw] w-full mb-[2vw]">
       <div className="absolute inset-0">
         <img
           src={getImageUrl(movie.backdrop_path, "original")}
@@ -31,7 +31,7 @@ const Hero = () => {
       </div>
       <div className="relative h-full flex items-center">
         <div className="px-[4%] w-full md:max-w-[50%] space-y-2 md:space-y-4">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold animate-fade-in line-clamp-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl font-bold animate-fade-in line-clamp-2">
             {movie.title || movie.name}
           </h1>
           <p className="text-sm sm:text-base md:text-lg text-gray-200 line-clamp-2 md:line-clamp-3 animate-fade-in">
