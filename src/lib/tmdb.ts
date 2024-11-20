@@ -25,6 +25,41 @@ export const getNewReleases = async () => {
   return response.data.results;
 };
 
+export const getHorrorMovies = async () => {
+  const response = await axios.get(
+    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=27&sort_by=popularity.desc`
+  );
+  return response.data.results;
+};
+
+export const getSciFiMovies = async () => {
+  const response = await axios.get(
+    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=878&sort_by=popularity.desc`
+  );
+  return response.data.results;
+};
+
+export const getAnimatedMovies = async () => {
+  const response = await axios.get(
+    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=16&sort_by=popularity.desc`
+  );
+  return response.data.results;
+};
+
+export const getThrillerMovies = async () => {
+  const response = await axios.get(
+    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=53&sort_by=popularity.desc`
+  );
+  return response.data.results;
+};
+
+export const getRomanceMovies = async () => {
+  const response = await axios.get(
+    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=10749&sort_by=popularity.desc`
+  );
+  return response.data.results;
+};
+
 export const getMoviesByGenre = async (genreId: string) => {
   const response = await axios.get(
     `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}&sort_by=popularity.desc`

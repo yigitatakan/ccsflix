@@ -33,22 +33,24 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
 
   return (
     <div className="space-y-2 relative category-row-container group">
-      <h2 className="text-xl font-medium px-[4%] text-white">{title}</h2>
+      <h2 className="text-xl font-medium px-[4%] text-white hover:text-gray-300 transition-colors duration-200">
+        {title}
+      </h2>
       <div className="relative group">
         <button
           onClick={() => scroll("left")}
-          className="scroll-button absolute left-0 z-40 h-[8.5vw] w-[4%] bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+          className="scroll-button absolute left-0 z-40 h-[8.5vw] w-[4%] bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60"
           aria-label="Scroll left"
         >
-          <ChevronLeft className="w-8 h-8 text-white" />
+          <ChevronLeft className="w-6 h-6 text-white" />
         </button>
         <div
           ref={rowRef}
-          className="category-row flex gap-2 overflow-x-auto px-[4%] scroll-smooth"
+          className="category-row flex gap-1 overflow-x-auto px-[4%] scroll-smooth"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {movies.map((movie) => (
-            <div key={movie.id} className="flex-none w-[16%] min-w-[200px]">
+            <div key={movie.id} className="flex-none w-[16.66%] min-w-[200px] px-[0.2%] transition-transform duration-300">
               <MovieCard
                 id={movie.id}
                 title={movie.title || movie.name || ""}
@@ -63,10 +65,10 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
         </div>
         <button
           onClick={() => scroll("right")}
-          className="scroll-button absolute right-0 z-40 h-[8.5vw] w-[4%] bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+          className="scroll-button absolute right-0 z-40 h-[8.5vw] w-[4%] bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60"
           aria-label="Scroll right"
         >
-          <ChevronRight className="w-8 h-8 text-white" />
+          <ChevronRight className="w-6 h-6 text-white" />
         </button>
       </div>
     </div>

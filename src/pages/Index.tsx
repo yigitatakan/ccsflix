@@ -2,7 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CategoryRow from "@/components/CategoryRow";
-import { getTrending, getPopular, getNewReleases, getMoviesByGenre, getKDramas } from "@/lib/tmdb";
+import {
+  getTrending,
+  getPopular,
+  getNewReleases,
+  getMoviesByGenre,
+  getKDramas,
+  getHorrorMovies,
+  getSciFiMovies,
+  getAnimatedMovies,
+  getThrillerMovies,
+  getRomanceMovies,
+} from "@/lib/tmdb";
 
 const GENRE_IDS = {
   action: "28",
@@ -46,18 +57,48 @@ const Index = () => {
     queryFn: getKDramas,
   });
 
+  const { data: horrorMovies } = useQuery({
+    queryKey: ["horror"],
+    queryFn: getHorrorMovies,
+  });
+
+  const { data: sciFiMovies } = useQuery({
+    queryKey: ["scifi"],
+    queryFn: getSciFiMovies,
+  });
+
+  const { data: animatedMovies } = useQuery({
+    queryKey: ["animated"],
+    queryFn: getAnimatedMovies,
+  });
+
+  const { data: thrillerMovies } = useQuery({
+    queryKey: ["thriller"],
+    queryFn: getThrillerMovies,
+  });
+
+  const { data: romanceMovies } = useQuery({
+    queryKey: ["romance"],
+    queryFn: getRomanceMovies,
+  });
+
   return (
     <div className="min-h-screen bg-netflix-black">
       <Navbar />
       <Hero movie={trending?.[0]} />
-      <div className="relative z-10 -mt-32 pb-8 space-y-8">
+      <div className="relative z-10 -mt-32 pb-8">
         <CategoryRow title="Trending Now" movies={trending || []} />
         <CategoryRow title="Popular on CinePlay" movies={popular || []} />
         <CategoryRow title="New Releases" movies={newReleases || []} />
-        <CategoryRow title="Action Movies" movies={actionMovies || []} />
-        <CategoryRow title="Comedy Movies" movies={comedyMovies || []} />
-        <CategoryRow title="Drama Movies" movies={dramaMovies || []} />
+        <CategoryRow title="Action & Adventure" movies={actionMovies || []} />
+        <CategoryRow title="Comedy" movies={comedyMovies || []} />
+        <CategoryRow title="Drama" movies={dramaMovies || []} />
         <CategoryRow title="Korean Dramas" movies={kdramas || []} />
+        <CategoryRow title="Horror" movies={horrorMovies || []} />
+        <CategoryRow title="Sci-Fi & Fantasy" movies={sciFiMovies || []} />
+        <CategoryRow title="Animation" movies={animatedMovies || []} />
+        <CategoryRow title="Thrillers" movies={thrillerMovies || []} />
+        <CategoryRow title="Romance" movies={romanceMovies || []} />
       </div>
     </div>
   );

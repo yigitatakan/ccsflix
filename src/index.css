@@ -30,7 +30,7 @@ body {
 .category-row {
   scrollbar-width: none;
   -ms-overflow-style: none;
-  margin: 3vw 0;
+  margin: 2.5vw 0;
 }
 
 .category-row::-webkit-scrollbar {
@@ -47,15 +47,16 @@ body {
 }
 
 .category-row-container:hover .movie-card {
-  transform: translateX(-5%);
+  transform: translateX(-2%);
 }
 
 .category-row-container:hover .movie-card:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
+  transition-delay: 0.3s;
 }
 
 .category-row-container:hover .movie-card:hover ~ .movie-card {
-  transform: translateX(5%);
+  transform: translateX(2%);
 }
 
 html {
@@ -77,4 +78,16 @@ html {
 
 .modal-gradient {
   background: linear-gradient(to top, #141414 10%, transparent 90%);
+}
+
+.category-row-container {
+  margin-bottom: 3vw;
+}
+
+.category-row-container:hover {
+  z-index: 10;
+}
+
+.category-row-container:last-child {
+  margin-bottom: 4vw;
 }
