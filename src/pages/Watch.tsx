@@ -2,13 +2,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getMovieDetails, getTVDetails } from "@/lib/tmdb";
 import { ArrowLeft } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const Watch = () => {
   const navigate = useNavigate();
   const { type, id } = useParams();
-  const [useBackupPlayer, setUseBackupPlayer] = useState(false);
-  const [primaryPlayerLoaded, setPrimaryPlayerLoaded] = useState(false);
+  const [useFallbackPlayer, setUseFallbackPlayer] = useState(false);
+  const [primaryPlayerFailed, setPrimaryPlayerFailed] = useState(false);
 
   const { data: details } = useQuery({
     queryKey: ["details", type, id],
@@ -25,19 +27,14 @@ const Watch = () => {
     ? `https://player.autoembed.cc/embed/tv/${details?.external_ids?.imdb_id || id}/1/1`
     : `https://player.autoembed.cc/embed/movie/${details?.external_ids?.imdb_id || id}`;
 
-  useEffect(() => {
-    // Set a timeout to switch to backup player if primary doesn't load
-    const timeoutId = setTimeout(() => {
-      if (!primaryPlayerLoaded) {
-        setUseBackupPlayer(true);
-      }
-    }, 5000); // Wait 5 seconds before switching to backup
+  const handlePrimaryPlayerError = () => {
+    setPrimaryPlayerFailed(true);
+    toast.error("Content not available on primary server");
+  };
 
-    return () => clearTimeout(timeoutId);
-  }, [primaryPlayerLoaded]);
-
-  const handlePrimaryPlayerLoad = () => {
-    setPrimaryPlayerLoaded(true);
+  const tryFallbackServer = () => {
+    setUseFallbackPlayer(true);
+    toast.success("Switching to backup server");
   };
 
   return (
@@ -52,18 +49,29 @@ const Watch = () => {
         </button>
       </div>
 
-      {!useBackupPlayer ? (
-        <iframe
-          key="primary-player"
-          src={primaryUrl}
-          className="w-full h-full"
-          allowFullScreen
-          allow="autoplay; fullscreen; picture-in-picture"
-          onLoad={handlePrimaryPlayerLoad}
-        />
+      {!useFallbackPlayer ? (
+        <>
+          <iframe
+            src={primaryUrl}
+            className="w-full h-full"
+            allowFullScreen
+            allow="autoplay; fullscreen; picture-in-picture"
+            onError={handlePrimaryPlayerError}
+          />
+          {primaryPlayerFailed && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+              <p className="text-white mb-4">Content not available on primary server</p>
+              <Button 
+                onClick={tryFallbackServer}
+                variant="secondary"
+              >
+                Try Backup Server
+              </Button>
+            </div>
+          )}
+        </>
       ) : (
         <iframe
-          key="backup-player"
           src={backupUrl}
           className="w-full h-full"
           allowFullScreen
