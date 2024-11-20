@@ -1,16 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import MovieDetailsModal from "./MovieDetailsModal";
+import { Movie } from "@/lib/tmdb";
 
-interface MovieCardProps {
-  id: number;
+type MovieCardProps = Pick<Movie, "id" | "poster_path" | "media_type" | "overview" | "backdrop_path"> & {
   title: string;
-  poster_path: string;
-  media_type?: string;
-  overview?: string;
-  release_date?: string;
-  backdrop_path?: string;
-}
+};
 
 const MovieCard = ({ id, title, poster_path, media_type = "movie", ...rest }: MovieCardProps) => {
   const [showModal, setShowModal] = useState(false);

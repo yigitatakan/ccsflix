@@ -7,17 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
-interface Movie {
-  id: number;
-  title: string;
-  name?: string;
-  poster_path: string;
-  media_type?: string;
-  overview?: string;
-  release_date?: string;
-  backdrop_path?: string;
-}
+import { Movie } from "@/lib/tmdb";
 
 interface CategoryRowProps {
   title: string;
@@ -50,7 +40,6 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
                     poster_path={movie.poster_path}
                     media_type={movie.media_type}
                     overview={movie.overview}
-                    release_date={movie.release_date}
                     backdrop_path={movie.backdrop_path}
                   />
                 </div>
