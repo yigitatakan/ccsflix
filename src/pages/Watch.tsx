@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getMovieDetails, getTVDetails } from "@/lib/tmdb";
 import { ArrowLeft } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -18,27 +18,12 @@ const Watch = () => {
   const { type, id } = useParams();
   const [season, setSeason] = useState("1");
   const [episode, setEpisode] = useState("1");
-  const [isPaused, setIsPaused] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const { data: details, error } = useQuery({
     queryKey: ["details", type, id],
     queryFn: () => (type === "tv" ? getTVDetails(id!) : getMovieDetails(id!)),
     retry: false,
   });
-
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data === "paused") {
-        setIsPaused(true);
-      } else if (event.data === "playing") {
-        setIsPaused(false);
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
 
   useEffect(() => {
     if (error) {
@@ -116,27 +101,7 @@ const Watch = () => {
         </div>
       </div>
 
-      {isPaused && details && (
-        <div className="absolute inset-0 bg-black/60 z-40 flex items-center transition-opacity duration-300 animate-fade-in">
-          <div className="px-16 space-y-4 max-w-3xl">
-            <h1 className="text-4xl font-bold text-white">
-              {details.title || details.name}
-            </h1>
-            <div className="flex items-center gap-4 text-sm text-white/80">
-              <span>{details.release_date?.split("-")[0]}</span>
-              {details.number_of_seasons && (
-                <span>{details.number_of_seasons} Seasons</span>
-              )}
-            </div>
-            <p className="text-white/90 text-lg leading-relaxed">
-              {details.overview}
-            </p>
-          </div>
-        </div>
-      )}
-
       <iframe
-        ref={iframeRef}
         src={embedUrl}
         className="w-full h-full"
         allowFullScreen
