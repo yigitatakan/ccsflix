@@ -39,7 +39,7 @@ const Navbar = () => {
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center gap-8">
           <Link to="/" className="text-red-600 text-3xl font-bold">
-            CINEPLAY
+            CCSFLIX
           </Link>
           <div className="hidden md:flex gap-4">
             <button onClick={() => handleNavigation("/")} className="text-white hover:text-gray-300">Home</button>

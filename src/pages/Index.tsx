@@ -107,7 +107,7 @@ const Index = () => {
       <Navbar />
       <Hero />
       <div className="relative z-10 -mt-32 pb-8">
-        <CategoryRow title="Popular on CinePlay" movies={popular || []} />
+        <CategoryRow title="Popular on CCSFLIX" movies={popular || []} />
         <CategoryRow title="New Releases" movies={newReleases || []} />
         <CategoryRow title="Action & Adventure" movies={actionMovies || []} />
         <CategoryRow title="Comedy" movies={comedyMovies || []} />
