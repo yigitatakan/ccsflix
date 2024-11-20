@@ -25,6 +25,20 @@ export const getNewReleases = async () => {
   return response.data.results;
 };
 
+export const getMoviesByGenre = async (genreId: string) => {
+  const response = await axios.get(
+    `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}&sort_by=popularity.desc`
+  );
+  return response.data.results;
+};
+
+export const getKDramas = async () => {
+  const response = await axios.get(
+    `${BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&with_original_language=ko&sort_by=popularity.desc`
+  );
+  return response.data.results;
+};
+
 export const getMovieDetails = async (id: string) => {
   const response = await axios.get(
     `${BASE_URL}/movie/${id}?api_key=${TMDB_API_KEY}`

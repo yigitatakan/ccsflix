@@ -46,6 +46,18 @@ body {
   opacity: 1;
 }
 
+.category-row-container:hover .movie-card {
+  transform: translateX(-5%);
+}
+
+.category-row-container:hover .movie-card:hover {
+  transform: scale(1.1);
+}
+
+.category-row-container:hover .movie-card:hover ~ .movie-card {
+  transform: translateX(5%);
+}
+
 html {
   scroll-behavior: smooth;
 }

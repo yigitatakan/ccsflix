@@ -32,12 +32,12 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
   if (!movies?.length) return null;
 
   return (
-    <div className="space-y-4 relative category-row-container group">
-      <h2 className="text-xl font-medium px-[4%]">{title}</h2>
+    <div className="space-y-2 relative category-row-container group">
+      <h2 className="text-xl font-medium px-[4%] text-white">{title}</h2>
       <div className="relative group">
         <button
           onClick={() => scroll("left")}
-          className="scroll-button absolute left-0 z-40 h-full w-12 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+          className="scroll-button absolute left-0 z-40 h-[8.5vw] w-[4%] bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
           aria-label="Scroll left"
         >
           <ChevronLeft className="w-8 h-8 text-white" />
@@ -45,23 +45,25 @@ const CategoryRow = ({ title, movies }: CategoryRowProps) => {
         <div
           ref={rowRef}
           className="category-row flex gap-2 overflow-x-auto px-[4%] scroll-smooth"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {movies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              id={movie.id}
-              title={movie.title || movie.name || ""}
-              poster_path={movie.poster_path}
-              media_type={movie.media_type}
-              overview={movie.overview}
-              release_date={movie.release_date}
-              backdrop_path={movie.backdrop_path}
-            />
+            <div key={movie.id} className="flex-none w-[16%] min-w-[200px]">
+              <MovieCard
+                id={movie.id}
+                title={movie.title || movie.name || ""}
+                poster_path={movie.poster_path}
+                media_type={movie.media_type}
+                overview={movie.overview}
+                release_date={movie.release_date}
+                backdrop_path={movie.backdrop_path}
+              />
+            </div>
           ))}
         </div>
         <button
           onClick={() => scroll("right")}
-          className="scroll-button absolute right-0 z-40 h-full w-12 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+          className="scroll-button absolute right-0 z-40 h-[8.5vw] w-[4%] bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
           aria-label="Scroll right"
         >
           <ChevronRight className="w-8 h-8 text-white" />
