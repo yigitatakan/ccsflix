@@ -7,17 +7,18 @@ import {
   getNewReleases,
   getMoviesByGenre,
   getKDramas,
-  getHorrorMovies,
-  getSciFiMovies,
-  getAnimatedMovies,
-  getThrillerMovies,
-  getRomanceMovies,
+  getTVShows,
 } from "@/lib/tmdb";
 
 const GENRE_IDS = {
+  horror: "27",
+  scifi: "878",
+  animation: "16",
+  thriller: "53",
+  romance: "10749",
   action: "28",
   comedy: "35",
-  drama: "18",
+  drama: "18"
 };
 
 const Index = () => {
@@ -53,27 +54,27 @@ const Index = () => {
 
   const { data: horrorMovies } = useQuery({
     queryKey: ["horror"],
-    queryFn: getHorrorMovies,
+    queryFn: () => getMoviesByGenre(GENRE_IDS.horror),
   });
 
   const { data: sciFiMovies } = useQuery({
     queryKey: ["scifi"],
-    queryFn: getSciFiMovies,
+    queryFn: () => getMoviesByGenre(GENRE_IDS.scifi),
   });
 
   const { data: animatedMovies } = useQuery({
     queryKey: ["animated"],
-    queryFn: getAnimatedMovies,
+    queryFn: () => getMoviesByGenre(GENRE_IDS.animation),
   });
 
   const { data: thrillerMovies } = useQuery({
     queryKey: ["thriller"],
-    queryFn: getThrillerMovies,
+    queryFn: () => getMoviesByGenre(GENRE_IDS.thriller),
   });
 
   const { data: romanceMovies } = useQuery({
     queryKey: ["romance"],
-    queryFn: getRomanceMovies,
+    queryFn: () => getMoviesByGenre(GENRE_IDS.romance),
   });
 
   return (
