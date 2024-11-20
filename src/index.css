@@ -6,14 +6,6 @@ body {
   background-color: #141414;
   color: white;
   overflow-x: hidden;
-  margin: 0;
-  padding: 0;
-}
-
-#root {
-  padding: 0;
-  margin: 0;
-  width: 100%;
 }
 
 .movie-card {
@@ -34,9 +26,12 @@ body {
   display: none;
 }
 
-@media (max-width: 768px) {
-  .movie-card {
-    min-width: 150px;
-    height: 225px;
-  }
+/* Add smooth scrolling to the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent content shift when modal opens */
+body.modal-open {
+  padding-right: var(--scrollbar-width);
 }

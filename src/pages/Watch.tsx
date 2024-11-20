@@ -76,66 +76,55 @@ const Watch = () => {
 
   return (
     <div 
-      className="fixed inset-0 bg-black w-screen h-screen overflow-hidden"
+      className="relative h-screen w-screen bg-black overflow-hidden cursor-none hover:cursor-auto"
       onMouseMove={handleMouseMove}
       onMouseLeave={() => isPlaying && setIsControlsVisible(false)}
     >
       {/* Back Button and Controls */}
-      <div 
-        className={`absolute top-0 left-0 w-full z-[60] transition-opacity duration-300 ${
-          isControlsVisible ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
+      <div className={`absolute top-0 left-0 w-full z-50 transition-opacity duration-300 ${isControlsVisible ? 'opacity-100' : 'opacity-0'}`}>
         <div className="bg-gradient-to-b from-black/80 to-transparent p-4">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-white hover:text-gray-300 transition-colors"
           >
             <ArrowLeft className="w-6 h-6" />
-            <span className="hidden sm:inline">Back to Browse</span>
+            <span>Back to Browse</span>
           </button>
         </div>
       </div>
 
       {/* Video Player */}
-      <div className="relative w-full h-full">
-        <iframe
-          src={`${embedUrl}?autoplay=true&muted=${isMuted}`}
-          className="absolute inset-0 w-full h-full"
-          allowFullScreen
-          allow="autoplay; fullscreen; picture-in-picture"
-          style={{ pointerEvents: isControlsVisible ? 'none' : 'auto' }}
-        />
-      </div>
+      <iframe
+        src={`${embedUrl}?autoplay=true&muted=${isMuted}`}
+        className="w-full h-full"
+        allowFullScreen
+        allow="autoplay; fullscreen; picture-in-picture"
+      />
 
       {/* Player Controls */}
-      <div 
-        className={`absolute bottom-0 left-0 w-full z-[60] transition-opacity duration-300 ${
-          isControlsVisible ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <div className="bg-gradient-to-t from-black/80 to-transparent px-4 py-6">
-          <div className="flex items-center justify-between text-white max-w-7xl mx-auto">
+      <div className={`absolute bottom-0 left-0 w-full z-50 transition-opacity duration-300 ${isControlsVisible ? 'opacity-100' : 'opacity-0'}`}>
+        <div className="bg-gradient-to-t from-black/80 to-transparent p-4">
+          <div className="flex items-center justify-between text-white">
             <div className="flex items-center gap-4">
               <button
                 onClick={togglePlay}
-                className="hover:text-gray-300 transition-colors p-2"
+                className="hover:text-gray-300 transition-colors"
               >
                 {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
               </button>
               <button
                 onClick={toggleMute}
-                className="hover:text-gray-300 transition-colors p-2"
+                className="hover:text-gray-300 transition-colors"
               >
                 {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
               </button>
-              <div className="text-sm font-medium hidden sm:block">
+              <div className="text-sm font-medium">
                 {details?.title || details?.name}
               </div>
             </div>
             <button
               onClick={toggleFullscreen}
-              className="hover:text-gray-300 transition-colors p-2"
+              className="hover:text-gray-300 transition-colors"
             >
               {isFullscreen ? <Minimize className="w-6 h-6" /> : <Maximize className="w-6 h-6" />}
             </button>

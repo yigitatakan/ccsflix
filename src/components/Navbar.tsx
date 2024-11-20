@@ -2,15 +2,14 @@ import { Search, Bell, User } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { searchContent, getImageUrl } from "@/lib/tmdb";
+import { searchContent } from "@/lib/tmdb";
 import { toast } from "sonner";
 import MovieDetailsModal from "./MovieDetailsModal";
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<any>(null);
 
   const { data: searchResults } = useQuery({
     queryKey: ["search", searchQuery],
@@ -19,8 +18,8 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-gradient-to-b from-black/80 to-transparent">
-      <div className="flex items-center justify-between max-w-7xl mx-auto px-4 py-3">
+    <nav className="fixed top-0 w-full z-50 bg-gradient-to-b from-black/80 to-transparent px-4 py-3">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center gap-8">
           <Link to="/" className="text-red-600 text-3xl font-bold">
             CINEPLAY
@@ -60,22 +59,20 @@ const Navbar = () => {
                 {searchResults.slice(0, 5).map((result: any) => (
                   <div
                     key={result.id}
-                    className="flex items-center gap-4 p-2 hover:bg-gray-800 cursor-pointer"
-                    onClick={() => {
-                      setSelectedMovie(result);
-                      setIsModalOpen(true);
-                      setSearchQuery("");
-                      setIsSearchOpen(false);
-                    }}
+                    className="flex items-center gap-2 p-2 hover:bg-gray-800 cursor-pointer"
+                    onClick={() => setSelectedMovie(result)}
                   >
-                    <img
-                      src={getImageUrl(result.poster_path, "w500")}
-                      alt={result.title || result.name}
-                      className="w-12 h-16 object-cover rounded"
-                    />
-                    <span className="text-white">
-                      {result.title || result.name}
-                    </span>
+                    {result.poster_path && (
+                      <img
+                        src={`https://image.tmdb.org/t/p/w92${result.poster_path}`}
+                        alt={result.title || result.name}
+                        className="w-12 h-16 object-cover rounded"
+                      />
+                    )}
+                    <div>
+                      <p className="text-white font-medium">{result.title || result.name}</p>
+                      <p className="text-gray-400 text-sm">{result.media_type}</p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -93,11 +90,8 @@ const Navbar = () => {
       {selectedMovie && (
         <MovieDetailsModal
           movie={selectedMovie}
-          isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedMovie(null);
-          }}
+          isOpen={!!selectedMovie}
+          onClose={() => setSelectedMovie(null)}
         />
       )}
     </nav>
